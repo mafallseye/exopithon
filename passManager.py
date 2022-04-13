@@ -95,5 +95,5 @@ def main():
             print("Invalide choice !")
 
 
-if __name__ == "__mail__":
+if __name__ == "__main__":
     main()

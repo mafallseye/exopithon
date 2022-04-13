@@ -1,14 +1,11 @@
-from cProfile import label
-from cgitb import text
+
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showerror, showinfo
-
-from mysqlx import Column
-# from listdesInscrit import list
+from listdesInscrit import listeInscrit
 
 
-class personnage():
+class Personnage():
     def __init__(self, prenom, no, photo):
         self.prenom = prenom
         self.nom = nom
@@ -19,13 +16,13 @@ class personnage():
 
 
 def parcourir():
-    global imageName
+    global imagenames
     imn = askopenfilename(initialdir="/", title="selectionner une image",
-                          filetypes=(("file png", "*png"), ("file jpg", "*jpg")))
+                          filetypes=(("file png", "*.png"), ("file jpeg", "*.jpg")))
     if imn:
-        imageName = imn
-    if imageName:
-        texte = imageName.split("/")
+        imagenames = imn
+    if imagenames:
+        texte = imagenames.split("/")
         photoEntre.configure(text=".../"+texte[-1])
 
 
@@ -37,10 +34,10 @@ def appartient(liste, val):
 
 
 def valider():
-    global listePersonne, imageName
-    photo = imageName
+    global listePersonne, imagenames
+    photo = imagenames
     if prenomEntre.get() and nomEntre.get() and photo:
-        pn = personnage(prenomEntre.get(), nomEntre.get(), photo)
+        pn = Personnage(prenomEntre.get(), nomEntre.get(), photo)
         if appartient(listePersonne, pn):
             showerror(title="Formulaire invalide",
                       message="cet utilisateur existe deja !")
@@ -55,13 +52,13 @@ def valider():
 
 
 def reinitialiser():
-    global imageName
+    global imagenames
     prenomEntre.delete(0, END)
     nomEntre.delete(0, END)
-    imageName = ''
+    imagenames = ''
     photoEntre.configure(text='Aucune image selectionner')
 
-    imageName, listePersonne = '', []
+    imagenames, listePersonne = "", []
 
 
 fen = Tk()
@@ -103,7 +100,7 @@ b1 = Button(fen, text='Valider', command=valider,
             width=10, fg='white', bg='#FF7800')
 b2 = Button(fen, text='Reinitialiser', command=reinitialiser,
             width=10, fg='white', bg='#FF7800')
-b3 = Button(fen, text='Voir la liste', command='',
+b3 = Button(fen, text='Voir la liste', command=lambda: listeInscrit(fen, listePersonne),
             width=10, fg='white', bg='#FF7800')
 
 b1.grid(row=4, column=0, pady=5)
